@@ -1,0 +1,51 @@
+{
+  "name": "preppy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node server/server.js",
+    "build": "cross-env NODE_ENV=production webpack",
+    "dev": "cross-env NODE_ENV=development concurrently \"nodemon server/server.js\" \"webpack-dev-server --hot\""
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddypjr/Preppy.git"
+  },
+  "author": "Edward Park, Kim Chiu, Tammy Le, Abu Fofanah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eddypjr/Preppy/issues"
+  },
+  "homepage": "https://github.com/eddypjr/Preppy#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "pg": "^8.5.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/preset-env": "^7.12.16",
+    "@babel/preset-react": "^7.12.13",
+    "babel-loader": "^8.2.2",
+    "concurrently": "^5.3.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.0.2",
+    "nodemon": "^2.0.7",
+    "sass": "^1.32.7",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
