@@ -42,11 +42,11 @@ module.exports = {
     ],
   },
   devServer: {
-      //bundle.js is in memory
+    //bundle.js is in memory
     port: 8080,
     publicPath: "/build",
     proxy: {
-        '/api': 'http://localhost:3000'
+      '/': 'http://localhost:3000'
     },
     hot: true,
   },
