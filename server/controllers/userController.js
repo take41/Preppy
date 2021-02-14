@@ -1,43 +1,54 @@
 // Middleware page
 const db = require('../models/userModels');
+// const bcrypt = require('bcryptjs');
+// const { response } = require('../server');
 const userController = {};
 
-//////User Creator middleware//////////
+////User Creator middleware//////////
 userController.createUser = (req, res, next) => {
   const {username, email, password} = req.body;
   const params = [username, email, password];
+  // console.log(params)
   const user = 'INSERT INTO users_table (username, password, email) VALUES ($1, $2, $3)';
+//crypt($2, gen_salt("bf")
+  if(!username || !password || !email) return next('Missing username, password, or email in userController.createUser');
 
   db.query(user, params)
     .then((result) => {
-      res.locals.createUser = result.rows[0];
+      res.locals.user = result.rows[0];
       return next();
     })
     .catch((err) => {
-      return next({
-        log: 'userController.createUser: ERROR: There was an error creating a character.',
-        status: 404,
-        message: {
-          err: 'An error has occurred',
-        },
-      });
+      return next(err)
     });
 };
 
 /////// Verify User middleware //////////////
 userController.verifyUser = (req, res, next) => {
   const {username, password} = req.body;
-  // const id = [req.query.id]
   const params = [username, password];
+  const verify = 'SELECT username, password FROM users_table WHERE username = $1 AND password = $2 LIMIT 1';
 
-  //$num === the number of the parameter
-  const verify = 'SELECT username, password FROM users_table WHERE username = username AND password = password LIMIT 1';
+  // if(!username || !password) res.redirect('/signup')
 
-  db.query(verify)
+    db.query(verify, params)
+      .then(results => {
+        console.log(results.rows[0])
+        if(results.rows[0] !== undefined) {
+          console.log(res.locals.user)         
+          res.locals.user = results.rows[0]; 
+          return next()
+        } else {
+          // return next({error: err})
+          res.redirect('/signup')
+        }
+      })
+      .catch((err) => {
+        return next(err)
+      })
 }
 
 //////////Reference below to verify user using MongoDB///////////////////////////
-
 // userController.verifyUser = (req, res, next) => {
 //   const { username, password } = req.body;
 
@@ -62,6 +73,5 @@ userController.verifyUser = (req, res, next) => {
 //       }
 //     })
 // };
-
 
 module.exports = userController;

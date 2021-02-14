@@ -1,0 +1,26 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Preppy</title>
+  <!-- <link href="/public/Login.css" rel="stylesheet" type="text/css"> -->
+</head>
+<body>
+  <div class = "container">
+    <form method="POST" action='/home' autocomplete="off">
+      <h1>Preppy</h1>
+      <h3>Plan your meals the right way</h3>
+      <div class = "userPass">
+        <label for = "username">Username: </label>
+        <input name="username" type="text" placeholder="username" class="user"></input>
+        <label for = "password">Password: </label> 
+        <input name="password" type="password" placeholder="password" class= "pass"></input>
+      </div>
+      <br>
+      <div class = "buttons">
+        <button id = "login" type = "submit">Login</button>
+        <button class = "sign"><a href='./signup'>Sign up</a></button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
