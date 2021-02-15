@@ -22,9 +22,9 @@ module.exports = {
         },
       },
       {
-        test: /\.s?css/,
+        test: /\.css$/,
         exclude: [/node_modules/, /client\/stylesheets\/modules/],
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|jpg|gif|woff|woff2|eot|ttf|svg|ico)$/,
