@@ -2,24 +2,32 @@
 <head>
   <meta charset="UTF-8">
   <title>Preppy</title>
-  <!-- <link href="/public/Login.css" rel="stylesheet" type="text/css"> -->
+  <link href="./public/Login.css" rel="stylesheet" type="text/css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Rhodium+Libre&family=Salsa&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class = "container">
     <form method="POST" action='/home' autocomplete="off">
-      <h1>Preppy</h1>
-      <h3>Plan your meals the right way</h3>
+    <div class = 'inputs'>
+
+      <div class= "header">
+        <h1>Preppy</h1>
+        <h3>Plan your meals the right way</h3>
+      </div>
       <div class = "userPass">
-        <label for = "username">Username: </label>
-        <input name="username" type="text" placeholder="username" class="user"></input>
-        <label for = "password">Password: </label> 
-        <input name="password" type="password" placeholder="password" class= "pass"></input>
+  
+          <label for = "username">Username:  </label>
+          <input name="username" type="text" placeholder="username" class="user"></input>
+          <label for = "password">Password:  </label> 
+          <input name="password" type="password" placeholder="password" class= "pass"></input>
+        </div>
+        <div class = "buttons">
+          <button id = "login" type = "submit">Login</button>
+          <button class = "sign"><a href='./signup'>Sign up</a></button>
+        </div>
       </div>
-      <br>
-      <div class = "buttons">
-        <button id = "login" type = "submit">Login</button>
-        <button class = "sign"><a href='./signup'>Sign up</a></button>
-      </div>
+    </div>
     </form>
   </div>
 </body>

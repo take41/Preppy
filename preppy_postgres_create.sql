@@ -31,8 +31,7 @@ CREATE TABLE public.meals_table (
 
 CREATE TABLE public.ingredients_table (
   "_id" serial NOT NULL,
-  "meal_name" varchar NOT NULL,
-  "ingredients_id" bigint,
+  "ingredients" varchar NOT NULL,
   CONSTRAINT "ingredients_table_id" PRIMARY KEY ("_id")
 ) WITH (
   OIDS=FALSE

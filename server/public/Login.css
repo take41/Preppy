@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+  background-image: url("food.jpg");
+  background-size: 100% 100%;
+  font-family: "Rhodium Libre", serif;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  /* text-align: center; */
+}
+
+.inputs {
+  padding: 10vh;
+  background-color: white;
+}
+
+h1 {
+  font-size: 6rem;
+}
+
+.header {
+  /* padding-top: -20vh; */
+  /* top: 0; */
+  /* padding-bottom: 6vh; */
+  text-align: center;
+}
+
+.userPass {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  /* height: 100%; */
+}
+
+input {
+  /* padding: 5% 25% 10% 5%; */
+  padding-top: 2%;
+  padding-bottom: 2%;
+  /* padding-right: 2%; */
+  margin-right: 5%;
+  width: 100%;
+  text-align: center;
+}
+label {
+  padding-right: 0.25vw;
+  padding-left: 1vw;
+}
+
+.buttons {
+  /* margin-bottom: 0; */
+  /* position: absolute; */
+  padding-top: 3vh;
+  padding-bottom: 1vh;
+  /* padding-bottom: 3vh; */
+  display: flex;
+  justify-content: center;
+  /* padding-right: 2vh; */
+  /* bottom: 15; */
+}
+
+button {
+  padding: 2% 6%;
+  /* background-color: blue; */
+  border-radius: 6px;
+}
+
+#login {
+  margin-right: 2%;
+}
+.sign {
+  margin-left: 2%;
+}

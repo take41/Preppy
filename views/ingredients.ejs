@@ -1,0 +1,42 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Preppy</title>
+</head>
+<body>
+  <script type="text/JavaScript">
+    function createNewElement() {
+      let counter = 1;
+      function inner() {
+        console.log(counter)
+        if(counter <= 4) {
+          counter++;
+          let txtNewInputBox = document.createElement('div');
+          txtNewInputBox.innerHTML = `
+          <label for = "ingredients">Ingredient ${counter}: </label> 
+          <input name = 'ingredients' type='text' placeholder = 'ingredient name'/>
+          `;
+          document.getElementById("ingredientss").appendChild(txtNewInputBox);
+        } 
+        return;  
+      }
+      return inner;
+    }
+    const threeMax = createNewElement();
+    </script>
+
+  <div class = "container">
+    <form method = "POST" action='/ingredients' autocomplete="off">
+      <h1>Ingredients</h1>
+      <div id = "ingredientss">
+        <label for = "ingredients">Ingredient 1: </label> 
+        <input name="ingredients" type="text" placeholder="ingredient name"></input>
+      </div>
+      <br>
+      <input type = "submit"/>
+    </form>
+    <button onclick="threeMax()">Add more ingredients</button>
+    <button onclick>Remove ingredient</button>
+  </div>
+</body>
+</html>

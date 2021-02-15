@@ -6,9 +6,8 @@ const userController = {};
 
 ////User Creator middleware//////////
 userController.createUser = (req, res, next) => {
-  const {username, email, password} = req.body;
-  const params = [username, email, password];
-  // console.log(params)
+  const {username, password, email} = req.body;
+  const params = [username, password, email];
   const user = 'INSERT INTO users_table (username, password, email) VALUES ($1, $2, $3)';
 //crypt($2, gen_salt("bf")
   if(!username || !password || !email) return next('Missing username, password, or email in userController.createUser');
@@ -29,49 +28,21 @@ userController.verifyUser = (req, res, next) => {
   const params = [username, password];
   const verify = 'SELECT username, password FROM users_table WHERE username = $1 AND password = $2 LIMIT 1';
 
-  // if(!username || !password) res.redirect('/signup')
+  if(!username || !password) return next("Missing required fields");
 
     db.query(verify, params)
       .then(results => {
-        console.log(results.rows[0])
-        if(results.rows[0] !== undefined) {
-          console.log(res.locals.user)         
+        // console.log(results.rows)
+        if(results.rows[0] !== undefined) {       
           res.locals.user = results.rows[0]; 
-          return next()
+          return next();
         } else {
-          // return next({error: err})
-          res.redirect('/signup')
+          res.redirect('/signup');
         }
       })
       .catch((err) => {
         return next(err)
       })
 }
-
-//////////Reference below to verify user using MongoDB///////////////////////////
-// userController.verifyUser = (req, res, next) => {
-//   const { username, password } = req.body;
-
-//   User.findOne({ username }, (err, user) => {
-//     if (err) {
-//       return next('Error in userController.verifyUser: ' + JSON.stringify(err))
-//     } else if(!user){
-//       res.redirect('/signup')
-//     } else {
-//       bcrypt.compare(password, user.password)
-//         .then(result => {
-//           if(!result) {
-//             res.redirect('/signup');
-//           } else {
-//             res.locals.user = user;
-//             return next();
-//           }
-//         })
-//         .catch(err => {
-//           return next('Error in userController.verifyUser: ' + JSON.stringify(err));
-//         })
-//       }
-//     })
-// };
 
 module.exports = userController;

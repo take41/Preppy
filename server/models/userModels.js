@@ -3,15 +3,11 @@ const { Pool } = require('pg');
 
 /////// ElephantSQL url /////////
 const PG_URI = 'postgres://bfzufuuy:QElbK_fE0_P6HgHwshur6xw61n4IAGWZ@ziggy.db.elephantsql.com:5432/bfzufuuy';
-const SALT_WORK_FACTOR = 10;
-const bcrypt = require('bcryptjs');
-
 
 // Creates a new pool using the connection string
 const pool = new Pool({
   connectionString: PG_URI,
 });
-
 
 module.exports = {
   query: (text, params, callback) => {

@@ -23,6 +23,8 @@ class App extends Component {
     return (
       <div>
         <p>Working</p>
+        <button><a href = '/meal'>Meal</a></button>
+        <button><a href = '/ingredients'>Ingredients</a></button>
       </div>
     )
   }
