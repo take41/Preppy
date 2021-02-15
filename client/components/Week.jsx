@@ -6,10 +6,10 @@ class Week extends Component {
     super(props);
 
     this.state = {
-      testMealName: '',
+      currIngrName: '',
       Sun: {
         dayName: 'Sunday',
-        mealName: '',
+        mealname: '',
         ingrList: []
       },
       Mon: {
@@ -43,56 +43,105 @@ class Week extends Component {
         ingrList: []
       }
     }
-    this.days = ['Sun', 'Mon', 'Tues', 'Weds', 'Thurs', 'Fri', 'Sat'];
-    
-    this.updateMealName = this.updateMealName.bind(this);
-    this.updateTestMealName = this.updateTestMealName.bind(this);
+    this.saveMealName = this.saveMealName.bind(this);
+    this.saveIngrName = this.saveIngrName.bind(this);
+    this.addToIngrList = this.addToIngrList.bind(this);
   }
 
-  updateTestMealName(event) {
-    const newName = event.target.value;
-    console.log('target', event.target.value);
-    this.setState({
+  saveMealName(event) {
+    const newMealName = event.target.value;
+    const dayAbbr = event.target.id;
+    const newState = {
       ...this.state,
-      testMealName: newName
-    });
-    console.log('state', this.state.testMealName);
+    };
+    newState[dayAbbr].mealname = newMealName;
+    this.setState(newState);
   }
 
-  // update individual mealName
-  // indiv day obj is
-  updateMealName(event) {
-    const newMealName = '';
-    // newMealName = event.target.
-    console.log('target', event.target);
-    const dayAbbr = this.days[event.target.id];
-    // this.state[dayAbbr][dayName] = currMealName
-
-    this.setState({
+  saveIngrName(event){
+    const newIngrName = event.target.value;
+    const newState = {
       ...this.state,
-      dayAbbr: {
-        ...this.state[dayAbbr],
-        mealname: newMealName
-      }
+      currIngrName: newIngrName
+    };
+    this.setState(newState);
+  }
+
+  addToIngrList(event) {
+    const ingrToAdd = this.state.currIngrName;
+    const dayAbbr = event.target.id;
+    const newState = {
+      ...this.state
+    };
+    newState[dayAbbr].ingrList.push(ingrToAdd);
+    this.setState(newState);
+  }
+
+  /********** FETCH REQUESTS **********/
+  // onclick save btn
+  // post meal name and ingr list to server
+  onSaveButtonClick(event) {
+    const dayAbbr = event.target.id;
+    const userBody = this.state[dayAbbr];
+
+    fetch('/mealAndIngredients', {
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+      },
+      body: JSON.stringify(userBody)
     })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   }
+
+  // get meal name from server
+  // to populate in Day cell
+
+
+  // get ingr list from server
+  // to populate shopping list modal
+
+
   
   render() {
+    const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Weds', 'Thurs', 'Fri', 'Sat'];
     const arrOfDays = [];
-    for (let i = 0; i < 7; i++) {
-      // console.log('this.state.days>>>>', this.state.days)
-      let dayAbbr = this.days[i];
+    for (let i = 0; i < daysOfWeek.length; i++) {
+      let dayAbbr = daysOfWeek[i];
       arrOfDays.push(<Day 
-        key={i} 
-        dayAbbr={dayAbbr} 
+        key={i}
+        dayModal={`day${i}`}
+        dayAbbr={daysOfWeek[i]}
         dayOfWeek={this.state[dayAbbr].dayName} 
-        mealOfDay={this.state[dayAbbr]['mealname']} 
-        ingredientList={this.state[dayAbbr]['ingrList']}
-        updateMealName={this.updateMealName}
-        testUpdate={this.updateTestMealName}
+        mealOfDay={this.state[dayAbbr].mealname} 
+        ingredientList={this.state[dayAbbr].ingrList}
+        saveMealName={this.saveMealName}
+        addToIngrList={this.addToIngrList}
+        saveIngrName={this.saveIngrName}
         />)
     }
+
+    /********** GET ALL INGREDIENTS FROM EVERY DAY **********/
+    const allOfIngr = [];
+    for (let key in this.state) {
+      console.log('check type of this.state.key', typeof this.state[key]);
+      if (typeof this.state[key] === 'object'){
+        allOfIngr.push(...this.state[key].ingrList);
+      }
+    }
+    // console.log('ALLOFINGREDIENTS>>>>', allOfIngr)
+
+    const showAllOfIngr = [];
+    for (let i = 0; i < allOfIngr.length; i++){
+      showAllOfIngr.push(<li>{allOfIngr[i]}</li>);
+    }
     
+
     return(
       <div> 
         <div className="container-fluid">
@@ -101,7 +150,7 @@ class Week extends Component {
           </div>
         </div>
 
-        <button type="button" className="btn btn-success btn-lg" data-toggle="modal" data-target="#couponModal">Get My Weekly Coupons!</button>
+        <button type="button" className="btn btn-success btn-lg" data-toggle="modal" data-target="#couponModal">Shopping List for the week!</button>
 
         <div id="couponModal" className="modal fade" role="dialog">
           <div className="modal-dialog">
@@ -110,12 +159,13 @@ class Week extends Component {
 
               <div className="modal-header">
                 <button type="button" className="close" data-dismiss="modal">&times;</button>
-                <h4 className="modal-title">Coupons!!!</h4>
+                <h4 className="modal-title">Shopping List</h4>
               </div>
 
               <div className="modal-body">
                 <p>Ingredients: </p>
-                <p>Coupons: </p>
+                <ul>{showAllOfIngr}</ul>
+                {/* <p>Coupons: </p> */}
               </div>
 
               <div className="modal-footer">
@@ -128,163 +178,5 @@ class Week extends Component {
     )
   }
 }
-
-// function Week(props) {
-//   /*
-//   this.state = {
-//     dayObj1: {
-//       dayName: Sunday,
-//       mealName: 'string',
-//       ingrList: []
-//     },
-//     dayObj2: {
-//       dayName: Monday,
-//       mealname: 'banana',
-//       ingrList: []
-//     }
-//     props.dayName // Monday
-//     props.mealName //
-//   }
-//   */
-//   // const [eachDay, seteachDay] = useState([
-//   //   {
-//   //     dayName: 'Sunday',
-//   //     mealName: '',
-//   //     ingrList: []
-//   //   }, 
-//   //   {
-//   //     dayName: 'Monday',
-//   //     mealName: '',
-//   //     ingrList: []
-//   //   }, 
-//   //   {
-//   //     dayName: 'Tueday',
-//   //     mealName: '',
-//   //     ingrList: []
-//   //   }, 
-//   //   {
-//   //     dayName: 'Wednesday',
-//   //     mealName: '',
-//   //     ingrList: []
-//   //   }, 
-//   //   {
-//   //     dayName: 'Thursday',
-//   //     mealName: '',
-//   //     ingrList: []
-//   //   }, 
-//   //   {
-//   //     dayName: 'Friday',
-//   //     mealName: '',
-//   //     ingrList: []
-//   //   }, 
-//   //   {
-//   //     dayName: 'Saturday',
-//   //     mealName: '',
-//   //     ingrList: []
-//   //   }
-//   // ])
-
-
-//   // const [oneDayObj, setDaysObj] = useState({
-//   //   dayNames: 'Sunday',
-//   //   objOfIngrLists: {},
-//   // });
-//   // const [objOfIngrLists, setIngrList] = useState({
-//   //   list: []
-//   // });
-//   const [days, setDays] = useState(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
-
-//   const [show, setShow] = useState(false);
-//   const [ingredientsFromServer, setIngredientsFromServer] = useState([]);
-
-//   const handleClose = () => setShow(false);
-//   const handleShow = () => setShow(true);
-
-//   //iterate to get the Days of the Week
-//   const arrOfDays = [];
-//   for (let i = 0; i < 7; i++) {
-//     // console.log('this.state.days>>>>', this.state.days)
-//     arrOfDays.push( //<div className="col" key ={i}>
-//     <Day key={i} dayOfWeek={days[i]} />
-//     // <Day key={i} dayOfWeek={eachDay[i]['dayName']} mealOfDay={eachDay[i]['mealName']} ingredientList={eachDay[i]['ingrList']} />
-//     // </div>
-//     )
-//   }
-
-//   //fetch GET request for the ingredients (MAKE SURE TO MATCH PATH FROM BACKEND)
-//   //using this useEffect, you tell React that your component needs to do something after render
-//   useEffect(() => {
-//     fetch('/ingredients')
-//       .then(response => response.json())
-//       .then(data => {
-//         console.log(data);
-//         setIngredientsFromServer(data); //check what data returns, see if its [data]
-//       });
-//   })
-
-//   return(
-//     <div>
-      // <div className="container-fluid">
-      //   <div className="row">
-      //     {arrOfDays}
-      //   </div>
-      // </div>
-
-      // <button type="button" className="btn btn-success btn-lg" data-toggle="modal" data-target="#couponModal">Get My Weekly Coupons!</button>
-
-      // <div id="couponModal" className="modal fade" role="dialog">
-      //   <div className="modal-dialog">
-
-      //     <div className="modal-content">
-
-      //       <div className="modal-header">
-      //         <button type="button" className="close" data-dismiss="modal">&times;</button>
-      //         <h4 className="modal-title">Coupons!!!</h4>
-      //       </div>
-
-      //       <div className="modal-body">
-      //         <p>Ingredients: </p>
-      //         <p>Coupons: </p>
-      //       </div>
-
-      //       <div className="modal-footer">
-      //         <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-      //       </div>
-      //     </div>
-
-      //   </div>
-      // </div>
-//     </div>
-//   )
-// }
-
-{/* <Button variant="success" size="lg" onClick={handleShow}>
-        Get My Weekly Coupons
-      </Button>
-      
-      <Modal size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered 
-        show={show} 
-        onHide={handleClose}
-        >
-
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">Weekly Coupons!!!</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <h5>Ingredients:</h5> 
-          //list the ingredients of the week
-          <h5>Coupons:</h5>
-          //show coupons
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
 
 export default Week;
