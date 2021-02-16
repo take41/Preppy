@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
+import Week from './Week.jsx';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { 
-      userData: '', 
-    };
-  }
-  
   render(){
     return (
-      <div></div>
+      <div >
+        <h1 >Preppy</h1>
+        <Week />
+      </div>
     )
   }
-  
 }
 
 export default App;

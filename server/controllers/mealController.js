@@ -7,11 +7,9 @@ mealController.addMeal = (req, res, next) => {
   const params = [mealname];
   const meal = 'INSERT INTO meals_table (meal_name) VALUES ($1)';
 
-  if(!meal_name) return next("Please enter a delicious meal that you'd like to make");
-
   db.query(meal, params)
     .then(result => {
-      res.locals.meal = result.rows[0];
+      // res.locals.meal = result.rows[0];
       return next();
     })
     .catch((err) => {
@@ -41,7 +39,6 @@ mealController.getMeal = (req, res, next) => {
 
   db.query(mealQuery, id)
   .then((result) => {
-    // console.log(req.query.id)
     res.locals.meals = result.rows[0];
     return next();
   })
@@ -56,7 +53,6 @@ mealController.updateMeal = (req, res, next) => {
 
   db.query(updateQuery, params)
     .then((result) => {
-      // console.log(result.rows[0])
       res.locals.meals = result.rows[0];
       return next();
     })
@@ -64,4 +60,5 @@ mealController.updateMeal = (req, res, next) => {
       return next(err);
     })
 };
+
 module.exports = mealController;

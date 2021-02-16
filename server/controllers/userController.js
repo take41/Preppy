@@ -30,7 +30,6 @@ userController.verifyUser = (req, res, next) => {
 
     db.query(verify, params)
       .then(results => {
-        // console.log(results.rows)
         if(results.rows[0] !== undefined) {       
           res.locals.user = results.rows[0]; 
           return next();

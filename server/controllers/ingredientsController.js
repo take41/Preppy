@@ -2,21 +2,6 @@ const db = require('../models/userModels');
 
 const ingredientsController = {};
 
-// ingredientsController.test = (req, res, next) => {
-//   const username = [res.cookies.username];
-//   const string = `SELECT username where username = $1, meals
-//   LEFT OUTER JOIN meals_table ON (users_table.meals_id = meals_table._id)` 
-//   // LEFT OUTER JOIN ingredients_table ON (meals.ingredients_id = ingredients._id)`;
-//   db.query(string, username)
-//     .then(result => {
-//       // console.log('result', result, 'username', username);
-//       // res.json(result)
-//       res.locals.test = result.rows[0];
-//       return next()
-//     })
-//     .catch(err => {err})
-// }
-
 ingredientsController.addIngredient = (req, res, next) => {
   const { ingrList } = req.body;
   const params = [ingrList];
@@ -38,7 +23,6 @@ ingredientsController.getIngredient = (req, res, next) => {
   
     db.query(stringQuery, id)
       .then((result) => {
-        // console.log(result)
         res.locals.ingredients = result.rows;
         return next();
       })

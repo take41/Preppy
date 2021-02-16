@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
-const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser")
 const cors = require('cors');
 const PORT = 3000;
 const mealRouter = require('./routes/meal');
@@ -40,35 +40,27 @@ app.post('/signup',
   }
 );
 /********  SIGN UP END ***********/
+
 //Verify user, then send them to the home page
 app.post('/home', 
 userController.verifyUser,
 (req, res) => {
-  // console.log(req.body)
   res.cookie('user', res.locals.user);
   res.status(200).sendFile(path.join(__dirname, "../client/index.html"));
 });
 
+///// Routers for for meals and ingredients ////////
+
 app.use('/meal', mealRouter);
 app.use('/ingredients', ingredientsRouter);
 
+//////// Add a new meal & ingredients //////////////////////
 
-//meal and ingredients POST request sent from client
-
-app.post('/submit',
-   mealController.addMeal, 
-   ingredientsController.addIngredient, 
-    (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../client/index.html'))
-})
-//2 middlewares to 1. post the data to the meals
-//2nd to add each ingredient associated with that meal
-
-//////// Add a new meal //////////////////////
+//POST request to meals/ingredients are not in the router because they are being redirected back to the index.html
 app.post('/meal',
   mealController.addMeal,
   (req, res) => {
-    res.status(200).sendFile(path.join(__dirname, '../client/index.html'))
+    res.send('working :D')
 });
 
 app.post('/ingredients',
@@ -77,25 +69,12 @@ app.post('/ingredients',
     res.status(200).sendFile(path.join(__dirname, '../client/index.html'))
 });
 
-//client side-  post req with the mealname and ingredients
-//server side - send back meal name,
-//coupon button - get request to the server to get ingredients info from api
-//completed 
-//ingredients GET request completed client side
-
-
-/***************TODO************* */
-// delete meal functionality
-// delete ingredient functionality
-// get ingredient functionality
-
-
-// Handles all other unknown routes
+// Handles all other unknown routes //
 app.use("*", (req, res) => {
   res.status(404).send("Not Found");
 });
 
-// Global Error Handler
+// Global Error Handler //
 app.use((err, req, res, next) => {
   res.status(500).send(err)
   res.status(404).send("Not Found");
