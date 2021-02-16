@@ -106,7 +106,6 @@ class Week extends Component {
   // get ingr list from server
   // to populate shopping list modal
 
-
   
   render() {
     const daysOfWeek = ['Sun', 'Mon', 'Tues', 'Weds', 'Thurs', 'Fri', 'Sat'];

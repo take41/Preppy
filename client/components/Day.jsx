@@ -22,7 +22,7 @@ class Day extends Component {
   return (
     
     // a grid with classes for small, medium, and large devices
-    <div style={style.container} className="col-sm-1 col-md-1 col-lg-1">
+    <div style={style.container} className="col-sm-1 col-md-1 col-lg-1" >
       <h3>{this.props.dayOfWeek}</h3> 
       <h5>{this.props.mealOfDay}</h5>
      
@@ -67,7 +67,12 @@ class Day extends Component {
 
 const style = {
   container: {
-    border: '1px solid black'
+    border: '1px solid Gainsboro',
+    padding: '50px 100px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 }
 
