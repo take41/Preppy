@@ -3,8 +3,8 @@ const db = require('../models/userModels');
 const mealController = {};
 
 mealController.addMeal = (req, res, next) => {
-  const {meal_name} = req.body;
-  const params = [meal_name];
+  const {mealname} = req.body;
+  const params = [mealname];
   const meal = 'INSERT INTO meals_table (meal_name) VALUES ($1)';
 
   if(!meal_name) return next("Please enter a delicious meal that you'd like to make");
@@ -20,15 +20,12 @@ mealController.addMeal = (req, res, next) => {
     })
 };
 
-
 mealController.deleteMeal = (req, res, next) => {
-  const {meal_name} = req.body;
-  const params = [meal_name];
-  const meal = 'DELETE FROM meals_table WHERE meal_name = $1 LIMIT 1';
+  const params = [req.params.id];
+  const deleteQuery = 'DELETE FROM meals_table WHERE _id = $1';
 
-  db.query(meal, params)
+  db.query(deleteQuery, params)
     .then(result => {
-      // console.log(result, params)
       res.locals.meal = result.rows[0];
       return next();
     })
@@ -38,20 +35,33 @@ mealController.deleteMeal = (req, res, next) => {
 };
 
 mealController.getMeal = (req, res, next) => {
-  // const { id } = req.query.id;
-  const meal = 'SELECT meal_name FROM meals_table';
+  //$1 is a parametized query, which is taking it's first parameter from the first value in the id array on line 42;
+  const id = [req.params.id];
+  const mealQuery = 'SELECT meal_name FROM meals_table WHERE _id = $1';
 
-  db.query(meal)
+  db.query(mealQuery, id)
   .then((result) => {
     // console.log(req.query.id)
-    // console.log('res', result.rows)
-    // console.log('meal req', req)
-    res.locals.meals = result.rows;
+    res.locals.meals = result.rows[0];
     return next();
   })
-  .catch((err) => {
-    return next(err)
+  .catch(err => {
+    return next(err);
   })
-}
+};
 
+mealController.updateMeal = (req, res, next) => {
+  const updateQuery = 'UPDATE meals_table SET meal_name = $1 WHERE _id = $2';
+  const params = [req.body.meal_name, req.params.id];
+
+  db.query(updateQuery, params)
+    .then((result) => {
+      // console.log(result.rows[0])
+      res.locals.meals = result.rows[0];
+      return next();
+    })
+    .catch(err => {
+      return next(err);
+    })
+};
 module.exports = mealController;

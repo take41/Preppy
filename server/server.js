@@ -1,10 +1,11 @@
 const express = require("express");
 const path = require("path");
-// const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const PORT = 3000;
-// const apiRouter = require('./routes/api');
+const mealRouter = require('./routes/meal');
+const ingredientsRouter = require('./routes/ingredients');
 const app = express();
 const userController = require('./controllers/userController');
 const mealController = require('./controllers/mealController');
@@ -18,9 +19,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'build')));
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
-
 //user will be sent to the login page
-app.get('/', (req, res) => {
+app.get('/', 
+  (req, res) => {
   res.render('./../views/login');
 });
 
@@ -39,53 +40,42 @@ app.post('/signup',
   }
 );
 /********  SIGN UP END ***********/
-
+//Verify user, then send them to the home page
 app.post('/home', 
-  userController.verifyUser,
-  (req, res) => {
+userController.verifyUser,
+(req, res) => {
+  // console.log(req.body)
+  res.cookie('user', res.locals.user);
   res.status(200).sendFile(path.join(__dirname, "../client/index.html"));
 });
 
-/*************  MEALS BEG ****************/
-app.get('/meal/',
-  mealController.getMeal,
-  (req, res) => {
-  res.send(res.locals.meals);
-  // res.render('./../views/meal');
-})
+app.use('/meal', mealRouter);
+app.use('/ingredients', ingredientsRouter);
 
-////// Add a new meal 
-app.post('/meal/:id',
+
+//meal and ingredients POST request sent from client
+
+app.post('/submit',
+   mealController.addMeal, 
+   ingredientsController.addIngredient, 
+    (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, '../client/index.html'))
+})
+//2 middlewares to 1. post the data to the meals
+//2nd to add each ingredient associated with that meal
+
+//////// Add a new meal //////////////////////
+app.post('/meal',
   mealController.addMeal,
-  // ingredientsController.addIngredients,
   (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../client/index.html'))
 });
-
-//////// Delete a meal ///////////
-// app.delete('/meal')
-
-/*************** MEALS END *******************/
-
-/************ INGREDIENTS BEG ****************/
-
-app.get('/ingredients',
-   ingredientsController.getIngredients,
-  (req, res) => {
-  res.json(res.locals.ingredients);
-  // res.render('./../views/ingredients');
-  // res.status(200).sendFile(path.join(__dirname, '../client/index.html'))
-})
 
 app.post('/ingredients',
-  ingredientsController.addIngredients,
+  ingredientsController.addIngredient,
   (req, res) => {
-    // res.send('meals working :D')
     res.status(200).sendFile(path.join(__dirname, '../client/index.html'))
 });
-
-// app.delete('/ingredients')
-/************** INGREDIENTS END ***************/
 
 //client side-  post req with the mealname and ingredients
 //server side - send back meal name,

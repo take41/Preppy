@@ -1,14 +1,26 @@
 const db = require('../models/userModels');
 
-
 const ingredientsController = {};
 
-ingredientsController.addIngredients = (req, res, next) => {
-  const { ingredients } = req.body;
-  const params = [ingredients];
-  const ingQuery = 'INSERT INTO ingredients_table (ingredients) VALUES ($1)';
+// ingredientsController.test = (req, res, next) => {
+//   const username = [res.cookies.username];
+//   const string = `SELECT username where username = $1, meals
+//   LEFT OUTER JOIN meals_table ON (users_table.meals_id = meals_table._id)` 
+//   // LEFT OUTER JOIN ingredients_table ON (meals.ingredients_id = ingredients._id)`;
+//   db.query(string, username)
+//     .then(result => {
+//       // console.log('result', result, 'username', username);
+//       // res.json(result)
+//       res.locals.test = result.rows[0];
+//       return next()
+//     })
+//     .catch(err => {err})
+// }
 
-  // if(ingredients === undefined) return next('No empty ingredient fields.')
+ingredientsController.addIngredient = (req, res, next) => {
+  const { ingrList } = req.body;
+  const params = [ingrList];
+  const ingQuery = 'INSERT INTO ingredients_table (ingredients) VALUES ($1)';
 
   db.query(ingQuery, params)
     .then((result) => {
@@ -18,44 +30,49 @@ ingredientsController.addIngredients = (req, res, next) => {
     .catch((err) => {
       return next(err)
     })
-}
+};
 
-
-ingredientsController.getIngredients = (req, res, next) => {
+ingredientsController.getIngredient = (req, res, next) => {
     const id = [req.query.id];
-    // const {ingredients} = req.body
-    //  const params = [ingredients];
-    const stringQuery = `SELECT ingredients FROM ingredients_table`;
+    const stringQuery = `SELECT ingredients FROM ingredients_table WHERE _id = $1`;
   
-    // if(ingredients === undefined) return next('No empty ingredient fields.')
-  
-    db.query(stringQuery)
+    db.query(stringQuery, id)
       .then((result) => {
-        // console.log('req body', req.body, 'res', res.locals, 'req query', req.query)
-        // res.locals.ingredients = 'happyy';
-        console.log(result)
+        // console.log(result)
         res.locals.ingredients = result.rows;
         return next();
       })
       .catch((err) => {
         return next(err)
       })
-    // query(stringQuery, (err, res) => {
-    //   // console.log(res.rows);
-    //   // console.log(res.rows)
-    //   // db.end();
-    //   // pool.end()
-    //   console.log(err, 'err', res, 'res')
-    // //   let x = [];
-    // //   res.rows.forEach(el => x.PushManager(res.rows.ingredients));
-    // //   console.log(x)
-    //   // res.locals.ingredients = res.rows;
-    //   // res.locals.ingredients = res.rows;
-    //   next()
-    // })
-  }
+  };
 
-// ingredientsController.getIngredients = (req, res, next) => {
+ingredientsController.updateIngredient = (req, res, next) => {
+  const updateQuery = 'UPDATE ingredients_table SET ingredients = $1 WHERE _id = $2';
+  const params = [req.body.ingredients, req.params.id];
 
-// }
+  db.query(updateQuery, params)
+    .then(result => {
+      res.locals.ingredients = result.rows[0];
+      return next();
+    })
+    .catch(err => {
+      return next(err);
+    })
+};
+
+ingredientsController.deleteIngredient = (req, res, next) => {
+  const params = [req.params.id];
+  const deleteQuery = 'DELETE FROM ingredients_table WHERE _id = $1';
+
+  db.query(deleteQuery, params)
+    .then(result => {
+      res.locals.ingredients = result.rows[0];
+      return next();
+    })
+    .catch(err => {
+      return next(err);
+    })
+};
+
 module.exports = ingredientsController;

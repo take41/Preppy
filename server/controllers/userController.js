@@ -1,7 +1,5 @@
-// Middleware page
 const db = require('../models/userModels');
-// const bcrypt = require('bcryptjs');
-// const { response } = require('../server');
+
 const userController = {};
 
 ////User Creator middleware//////////
@@ -18,7 +16,7 @@ userController.createUser = (req, res, next) => {
       return next();
     })
     .catch((err) => {
-      return next(err)
+      return next(err);
     });
 };
 
@@ -36,13 +34,11 @@ userController.verifyUser = (req, res, next) => {
         if(results.rows[0] !== undefined) {       
           res.locals.user = results.rows[0]; 
           return next();
-        } else {
-          res.redirect('/signup');
-        }
+        } else res.redirect('/signup');    
       })
       .catch((err) => {
         return next(err)
-      })
-}
+      });
+};
 
 module.exports = userController;

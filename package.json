@@ -19,22 +19,17 @@
   },
   "homepage": "https://github.com/eddypjr/Preppy#readme",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "ejs": "^3.1.6",
     "eslint": "^7.20.0",
     "express": "^4.17.1",
-    "knex": "^0.21.17",
     "pg": "^8.5.1",
-    "pg-format": "^1.0.4",
-    "pg-hstore": "^2.3.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "sequelize": "^6.5.0"
+    "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
