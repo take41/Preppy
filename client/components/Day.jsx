@@ -96,12 +96,16 @@ class Day extends Component {
 
 const style = {
   container: {
+    margin: "0",
     border: "1px solid Gainsboro",
-    padding: "50px 100px",
+    padding: "35px 35px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
+    height: "100%"
+    // backgroundColor: "red",
   },
 };
 

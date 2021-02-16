@@ -145,7 +145,7 @@ class Week extends Component {
     return (
       <div>
         <div className='container-fluid'>
-          <div className='row'>{arrOfDays}</div>
+          <div className='row' style = {style.container}>{arrOfDays}</div>
         </div>
 
         <button
@@ -187,6 +187,16 @@ class Week extends Component {
         </div>
       </div>
     );
+  }
+}
+
+const style = {
+  container: {
+    display: "flex",
+    flexDirection: "row",
+    // width: "100%",
+    top: "50%",
+    height: "100%",   
   }
 }
 

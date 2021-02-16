@@ -5,7 +5,7 @@ class App extends Component {
   render(){
     return (
       <div >
-        <h1 >Preppy</h1>
+        {/* <h1 >Preppy</h1> */}
         <Week />
       </div>
     )
