@@ -1,0 +1,36 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Signup</title>
+  <!-- <link href="/public/Signup.css" rel="stylesheet" type="text/css"/> -->
+</head>
+<body>
+  <div id="root"></div>
+  <div class = "container">
+    <form method='POST' action='/signup' autocomplete="off">
+      <h1>Signup</h1>
+      <div class = "user">
+        <label for ="username">Username: </label>
+        <input name="username" type="text"></input>
+      </div>
+      <div class = "pass">
+        <label for ="password">Password: </label>
+        <input name="password" type="password"></input>
+      </div>
+      <div class = "emails">
+        <label for ="email">Email: </label>
+        <input name="email" type="text"></input>
+      </div>
+      <div class = "buttons">
+        <input type='submit' value='Create User'/>
+        <button class = 'login'><a href = '/'>Back to Login</a></button> 
+      </div>
+    </div>
+    <% if (error) { %>
+      <br>
+      <div>Please fill out the form completeley </div>
+      <div> <%= error %> </div>
+    <% } %>
+  </form>
+</body>
+</html>
